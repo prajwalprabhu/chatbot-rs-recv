@@ -2,9 +2,9 @@ use gio::prelude::*;
 use gtk::prelude::*;
 use gtk::{Application, ApplicationWindow};
 
-use gui::backend_gui::Message;
+use super::backend_gui::Message;
 use std::sync::{ Arc,Mutex, mpsc};
-mod gui;
+// mod gui;
 fn main() {
     let application =
         Application::new(Some("com.github.gtk-rs.examples.basic"), Default::default())
@@ -50,29 +50,22 @@ fn main() {
         window.add(&box_main);
         let stream_clone = stream.try_clone().expect("stream cant be cloned");
         let name_clone = format!("{:?}", name);
-        let (thread_handle,rx) = gui::backend_gui::handle_client(&stream);
+        let (thread_handle,rx) = super::backend_gui::handle_client(&stream);
         send_button.connect_clicked(move |_| {
-            gui::backend_gui::send(
+            super::backend_gui::send(
                 &stream_clone,
-                gui::backend_gui::Message {
+                Message {
                     member: name_clone.clone(),
                     chat: entry.get_text().to_string(),
                 },
             )
         });
         // let new_ls = Mutex::new(Arc::new(ls);
-    //     std::thread::spawn(move ||{
-    //         test(rx,ls);
-    // });
-        // gui::backend_gui::run(ls).expect("backend_gui : ");
-         window.show_all();
-        loop{
-            // let rx = new_rx.lock().expect("Failed to lock");
-            let message = rx.recv().expect("Failed recv ");
-            // let ls = new_ls.lock().expect("Failed to lock ");
-            ls.add(&gtk::Label::new(Some(&format!("{:?} : {:?}",message.member,message.chat))));
+        std::thread::spawn(move ||{
 
-        }
+    });
+        // gui::backend_gui::run(ls).expect("backend_gui : ");
+        window.show_all();
         thread_handle.join().expect("Failed to join :");
     });
 

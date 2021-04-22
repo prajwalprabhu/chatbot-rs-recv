@@ -1,5 +1,5 @@
 [package]
-name = "chtbot-rs-recv"
+name = "chtabot-rs-recv"
 version = "0.1.0"
 edition = "2018"
 
@@ -9,3 +9,10 @@ edition = "2018"
 serde_json = "1.0.64"
 serde = "1.0.125"
 serde_derive = "1.0.125"
+[dependencies.gtk]
+version = "0.9.0"
+features = ["v3_16"]
+
+[dependencies.gio]
+version = ""
+features = ["v2_44"]
